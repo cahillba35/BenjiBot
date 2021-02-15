@@ -71,11 +71,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.exe</TargetExt>
-    <IncludePath>$(SolutionDir)..\s2client-api\project\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\s2client-api\project\include;$(SolutionDir);$(SolutionDir)/src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\s2client-api\project\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)..\s2client-api\project\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\s2client-api\project\include;$(SolutionDir);$(SolutionDir)/src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\s2client-api\project\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -93,6 +93,7 @@
       <AdditionalIncludeDirectories>..\s2client-api\build\generated;..\s2client-api\contrib\SDL-mirror\include;..\s2client-api\contrib\civetweb\include;..\s2client-api\src\..\include;..\s2client-api\contrib\protobuf\src;..\s2client-api\contrib\civetweb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\s2client-api\build\bin\;</AdditionalLibraryDirectories>
@@ -122,6 +123,7 @@
       <AdditionalIncludeDirectories>..\s2client-api\build\generated;..\s2client-api\src;..\s2client-api\contrib\SDL-mirror\include;..\s2client-api\src;..\s2client-api\contrib\civetweb\include;..\s2client-api\include;..\s2client-api\contrib\protobuf\src;..\s2client-api\contrib\civetweb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -133,11 +135,17 @@
   <ItemGroup>
     <ClCompile Include="Cryptbot.cpp" />
     <ClCompile Include="CryptbotMain.cpp" />
+    <ClCompile Include="src\BenjiBot.cpp" />
+    <ClCompile Include="src\ControlGroups\ControlGroup.cpp" />
     <ClCompile Include="Strategys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cryptbot.h" />
     <ClInclude Include="LadderInterface.h" />
+    <ClInclude Include="src\BenjiBot.hpp" />
+    <ClInclude Include="src\BotCommon.hpp" />
+    <ClInclude Include="src\ControlGroups\ControlGroup.hpp" />
+    <ClInclude Include="src\Queries\UnitTypeQueries.hpp" />
     <ClInclude Include="Strategys.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
