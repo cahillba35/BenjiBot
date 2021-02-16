@@ -42,7 +42,7 @@ src/.vs/
 
 # =========================
 #Release and Debug Folders
-CryptBot\x64
+CryptBot/x64
 
 # =========================
 # Operating System Files
