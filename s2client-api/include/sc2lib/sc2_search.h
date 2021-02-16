@@ -28,14 +28,14 @@ struct ExpansionParameters {
     // With what granularity to step the circumference of the circle.
     float circle_step_size_;
 
-    // With what distance to cluster mineral/vespene in, this will be used for center of mass calulcation.
+    // With what distance to cluster mineral/vespene in, this will be used for center of mass calculation.
     float cluster_distance_;
 
     // If filled out CalculateExpansionLocations will render spheres to show what it calculated.
     DebugInterface* debug_;
 };
 
-// Calculates expansion locations, this call can take on the order of 100ms since it makes blocking queries to SC2 so call it once and cache the reults.
+// Calculates expansion locations, this call can take on the order of 100ms since it makes blocking queries to SC2 so call it once and cache the results.
 std::vector<Point3D> CalculateExpansionLocations(const ObservationInterface* observation, QueryInterface* query, ExpansionParameters parameters=ExpansionParameters());
 
 }

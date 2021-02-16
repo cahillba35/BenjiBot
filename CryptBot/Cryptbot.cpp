@@ -6,7 +6,7 @@
 
 #include "Queries/UnitTypeQueries.hpp"
 
-size_t CalculateQueries(float radius, float step_size, const Point2D& center, sc2::ABILITY_ID Structure, QueryType QType, std::vector<QueryInterface::PlacementQuery>& queries) 
+size_t CalculateQueries2(float radius, float step_size, const Point2D& center, sc2::ABILITY_ID Structure, QueryType QType, std::vector<QueryInterface::PlacementQuery>& queries) 
 {
 	Point2D current_grid, previous_grid(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 	size_t valid_queries = 0;
@@ -72,7 +72,7 @@ Point2D CryptBot::GetRandomBuildableLocationFor(sc2::ABILITY_ID Structure, sc2::
 
 	size_t query_count = 0;
 	for (auto r : parameters.radiuses_) {
-		query_count += CalculateQueries(r, parameters.circle_step_size_, Location, Structure, QType, queries);
+		query_count += CalculateQueries2(r, parameters.circle_step_size_, Location, Structure, QType, queries);
 	}
 	float distance = std::numeric_limits<float>::max();
 	std::vector<bool> results = Query()->Placement(queries);
@@ -102,7 +102,7 @@ Point2D CryptBot::GetNearestBuildableLocationFor(sc2::ABILITY_ID Structure, sc2:
 
 	size_t query_count = 0;
 	for (auto r : parameters.radiuses_) {
-		query_count += CalculateQueries(r, parameters.circle_step_size_, Location, Structure, QType, queries);
+		query_count += CalculateQueries2(r, parameters.circle_step_size_, Location, Structure, QType, queries);
 	}
 	float distance = std::numeric_limits<float>::max();
 	Point2D closest;

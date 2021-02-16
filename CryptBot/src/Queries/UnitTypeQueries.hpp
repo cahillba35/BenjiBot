@@ -1,17 +1,17 @@
 #pragma once
-#include "BotCommon.hpp"
+
 
 // --------------------------------------------------------
 struct IsAttackable 
 {
-	bool operator()(const Unit& unit) 
+	bool operator()(const sc2::Unit& unit) 
 	{
 		switch (unit.unit_type.ToType()) 
 		{
 			// These are examples, we need to check more things.
-			case UNIT_TYPEID::ZERG_OVERLORD:    return false;
-			case UNIT_TYPEID::ZERG_OVERSEER:    return false;
-			case UNIT_TYPEID::PROTOSS_OBSERVER: return false;
+			case sc2::UNIT_TYPEID::ZERG_OVERLORD:    return false;
+			case sc2::UNIT_TYPEID::ZERG_OVERSEER:    return false;
+			case sc2::UNIT_TYPEID::PROTOSS_OBSERVER: return false;
 
 			default: return true;
 		}
@@ -98,82 +98,82 @@ struct IsArmy
 	{
 		switch (unit.unit_type.ToType())
 		{
-			case UNIT_TYPEID::TERRAN_BANSHEE: return true;
-			case UNIT_TYPEID::TERRAN_BATTLECRUISER: return true;
-			case UNIT_TYPEID::TERRAN_CYCLONE: return true;
-			case UNIT_TYPEID::TERRAN_GHOST: return true;
-			case UNIT_TYPEID::TERRAN_HELLION: return true;
-			case UNIT_TYPEID::TERRAN_HELLIONTANK: return true;
-			case UNIT_TYPEID::TERRAN_LIBERATOR: return true;
-			case UNIT_TYPEID::TERRAN_LIBERATORAG: return true;
-			case UNIT_TYPEID::TERRAN_MARAUDER: return true;
-			case UNIT_TYPEID::TERRAN_MARINE: return true;
-			case UNIT_TYPEID::TERRAN_MEDIVAC: return true;
-			case UNIT_TYPEID::TERRAN_MULE: return true;
-			case UNIT_TYPEID::TERRAN_RAVEN: return true;
-			case UNIT_TYPEID::TERRAN_REAPER: return true;
-			case UNIT_TYPEID::TERRAN_SCV: return true;
-			case UNIT_TYPEID::TERRAN_SIEGETANK: return true;
-			case UNIT_TYPEID::TERRAN_SIEGETANKSIEGED: return true;
-			case UNIT_TYPEID::TERRAN_THOR: return true;
-			case UNIT_TYPEID::TERRAN_THORAP: return true;
-			case UNIT_TYPEID::TERRAN_VIKINGASSAULT: return true;
-			case UNIT_TYPEID::TERRAN_VIKINGFIGHTER: return true;
-			case UNIT_TYPEID::ZERG_BANELING: return true;
-			case UNIT_TYPEID::ZERG_BROODLING: return true;
-			case UNIT_TYPEID::ZERG_BROODLORD: return true;
-			case UNIT_TYPEID::ZERG_BROODLORDCOCOON: return true;
-			case UNIT_TYPEID::ZERG_CHANGELING: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGMARINE: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZEALOT: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZERGLING: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS: return true;
-			case UNIT_TYPEID::ZERG_CORRUPTOR: return true;
-			case UNIT_TYPEID::ZERG_DRONE: return true;
-			case UNIT_TYPEID::ZERG_HYDRALISK: return true;
-			case UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG: return true;
-			case UNIT_TYPEID::ZERG_INFESTOR: return true;
-			case UNIT_TYPEID::ZERG_INFESTORTERRAN: return true;
-			case UNIT_TYPEID::ZERG_LOCUSTMP: return true;
-			case UNIT_TYPEID::ZERG_LOCUSTMPFLYING: return true;
-			case UNIT_TYPEID::ZERG_LURKERMP: return true;
-			case UNIT_TYPEID::ZERG_MUTALISK: return true;
-			case UNIT_TYPEID::ZERG_OVERLORD: return true;
-			case UNIT_TYPEID::ZERG_OVERLORDTRANSPORT: return true;
-			case UNIT_TYPEID::ZERG_OVERSEER: return true;
-			case UNIT_TYPEID::ZERG_QUEEN: return true;
-			case UNIT_TYPEID::ZERG_RAVAGER: return true;
-			case UNIT_TYPEID::ZERG_ROACH: return true;
-			case UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED: return true;
-			case UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED: return true;
-			case UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP: return true;
-			case UNIT_TYPEID::ZERG_SWARMHOSTMP: return true;
-			case UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON: return true;
-			case UNIT_TYPEID::ZERG_ULTRALISK: return true;
-			case UNIT_TYPEID::ZERG_VIPER: return true;
-			case UNIT_TYPEID::ZERG_ZERGLING: return true;
-			case UNIT_TYPEID::PROTOSS_ADEPT: return true;
-			case UNIT_TYPEID::PROTOSS_ARCHON: return true;
-			case UNIT_TYPEID::PROTOSS_CARRIER: return true;
-			case UNIT_TYPEID::PROTOSS_COLOSSUS: return true;
-			case UNIT_TYPEID::PROTOSS_DARKTEMPLAR: return true;
-			case UNIT_TYPEID::PROTOSS_DISRUPTOR: return true;
-			case UNIT_TYPEID::PROTOSS_HIGHTEMPLAR: return true;
-			case UNIT_TYPEID::PROTOSS_IMMORTAL: return true;
-			case UNIT_TYPEID::PROTOSS_INTERCEPTOR: return true;
-			case UNIT_TYPEID::PROTOSS_MOTHERSHIP: return true;
-			case UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE: return true;
-			case UNIT_TYPEID::PROTOSS_OBSERVER: return true;
-			case UNIT_TYPEID::PROTOSS_ORACLE: return true;
-			case UNIT_TYPEID::PROTOSS_PHOENIX: return true;
-			case UNIT_TYPEID::PROTOSS_PROBE: return true;
-			case UNIT_TYPEID::PROTOSS_SENTRY: return true;
-			case UNIT_TYPEID::PROTOSS_STALKER: return true;
-			case UNIT_TYPEID::PROTOSS_TEMPEST: return true;
-			case UNIT_TYPEID::PROTOSS_VOIDRAY: return true;
-			case UNIT_TYPEID::PROTOSS_WARPPRISM: return true;
-			case UNIT_TYPEID::PROTOSS_ZEALOT: return true;
+			case sc2::UNIT_TYPEID::TERRAN_BANSHEE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_BATTLECRUISER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_CYCLONE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_GHOST: return true;
+			case sc2::UNIT_TYPEID::TERRAN_HELLION: return true;
+			case sc2::UNIT_TYPEID::TERRAN_HELLIONTANK: return true;
+			case sc2::UNIT_TYPEID::TERRAN_LIBERATOR: return true;
+			case sc2::UNIT_TYPEID::TERRAN_LIBERATORAG: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MARAUDER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MARINE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MEDIVAC: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MULE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_RAVEN: return true;
+			case sc2::UNIT_TYPEID::TERRAN_REAPER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SCV: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SIEGETANK: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SIEGETANKSIEGED: return true;
+			case sc2::UNIT_TYPEID::TERRAN_THOR: return true;
+			case sc2::UNIT_TYPEID::TERRAN_THORAP: return true;
+			case sc2::UNIT_TYPEID::TERRAN_VIKINGASSAULT: return true;
+			case sc2::UNIT_TYPEID::TERRAN_VIKINGFIGHTER: return true;
+			case sc2::UNIT_TYPEID::ZERG_BANELING: return true;
+			case sc2::UNIT_TYPEID::ZERG_BROODLING: return true;
+			case sc2::UNIT_TYPEID::ZERG_BROODLORD: return true;
+			case sc2::UNIT_TYPEID::ZERG_BROODLORDCOCOON: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELING: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINE: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZEALOT: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLING: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS: return true;
+			case sc2::UNIT_TYPEID::ZERG_CORRUPTOR: return true;
+			case sc2::UNIT_TYPEID::ZERG_DRONE: return true;
+			case sc2::UNIT_TYPEID::ZERG_HYDRALISK: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTOR: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTORTERRAN: return true;
+			case sc2::UNIT_TYPEID::ZERG_LOCUSTMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_LOCUSTMPFLYING: return true;
+			case sc2::UNIT_TYPEID::ZERG_LURKERMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_MUTALISK: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERLORD: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERLORDTRANSPORT: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERSEER: return true;
+			case sc2::UNIT_TYPEID::ZERG_QUEEN: return true;
+			case sc2::UNIT_TYPEID::ZERG_RAVAGER: return true;
+			case sc2::UNIT_TYPEID::ZERG_ROACH: return true;
+			case sc2::UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED: return true;
+			case sc2::UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED: return true;
+			case sc2::UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_SWARMHOSTMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON: return true;
+			case sc2::UNIT_TYPEID::ZERG_ULTRALISK: return true;
+			case sc2::UNIT_TYPEID::ZERG_VIPER: return true;
+			case sc2::UNIT_TYPEID::ZERG_ZERGLING: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ADEPT: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ARCHON: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_CARRIER: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_COLOSSUS: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_DARKTEMPLAR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_DISRUPTOR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_HIGHTEMPLAR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_IMMORTAL: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_INTERCEPTOR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_MOTHERSHIP: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_OBSERVER: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ORACLE: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_PHOENIX: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_PROBE: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_SENTRY: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_STALKER: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_TEMPEST: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_VOIDRAY: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_WARPPRISM: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ZEALOT: return true;
 
 			default: return false;
 		}
@@ -187,62 +187,62 @@ struct IsGroundArmy
 	{
 		switch (unit.unit_type.ToType())
 		{
-			case UNIT_TYPEID::TERRAN_BANSHEE: return true;
-			case UNIT_TYPEID::TERRAN_BATTLECRUISER: return true;
-			case UNIT_TYPEID::TERRAN_CYCLONE: return true;
-			case UNIT_TYPEID::TERRAN_GHOST: return true;
-			case UNIT_TYPEID::TERRAN_HELLION: return true;
-			case UNIT_TYPEID::TERRAN_HELLIONTANK: return true;
-			case UNIT_TYPEID::TERRAN_MARAUDER: return true;
-			case UNIT_TYPEID::TERRAN_MARINE: return true;
-			case UNIT_TYPEID::TERRAN_MULE: return true;
-			case UNIT_TYPEID::TERRAN_REAPER: return true;
-			case UNIT_TYPEID::TERRAN_SCV: return true;
-			case UNIT_TYPEID::TERRAN_SIEGETANK: return true;
-			case UNIT_TYPEID::TERRAN_SIEGETANKSIEGED: return true;
-			case UNIT_TYPEID::TERRAN_THOR: return true;
-			case UNIT_TYPEID::TERRAN_THORAP: return true;
-			case UNIT_TYPEID::TERRAN_VIKINGASSAULT: return true;
-			case UNIT_TYPEID::ZERG_BANELING: return true;
-			case UNIT_TYPEID::ZERG_BROODLING: return true;
-			case UNIT_TYPEID::ZERG_BROODLORDCOCOON: return true;
-			case UNIT_TYPEID::ZERG_CHANGELING: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGMARINE: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZEALOT: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZERGLING: return true;
-			case UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS: return true;
-			case UNIT_TYPEID::ZERG_CORRUPTOR: return true;
-			case UNIT_TYPEID::ZERG_DRONE: return true;
-			case UNIT_TYPEID::ZERG_HYDRALISK: return true;
-			case UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG: return true;
-			case UNIT_TYPEID::ZERG_INFESTOR: return true;
-			case UNIT_TYPEID::ZERG_INFESTORTERRAN: return true;
-			case UNIT_TYPEID::ZERG_LURKERMP: return true;
-			case UNIT_TYPEID::ZERG_OVERLORD: return true;
-			case UNIT_TYPEID::ZERG_OVERLORDTRANSPORT: return true;
-			case UNIT_TYPEID::ZERG_OVERSEER: return true;
-			case UNIT_TYPEID::ZERG_QUEEN: return true;
-			case UNIT_TYPEID::ZERG_RAVAGER: return true;
-			case UNIT_TYPEID::ZERG_ROACH: return true;
-			case UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED: return true;
-			case UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED: return true;
-			case UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP: return true;
-			case UNIT_TYPEID::ZERG_SWARMHOSTMP: return true;
-			case UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON: return true;
-			case UNIT_TYPEID::ZERG_ULTRALISK: return true;
-			case UNIT_TYPEID::ZERG_ZERGLING: return true;
-			case UNIT_TYPEID::PROTOSS_ADEPT: return true;
-			case UNIT_TYPEID::PROTOSS_ARCHON: return true;
-			case UNIT_TYPEID::PROTOSS_COLOSSUS: return true;
-			case UNIT_TYPEID::PROTOSS_DARKTEMPLAR: return true;
-			case UNIT_TYPEID::PROTOSS_DISRUPTOR: return true;
-			case UNIT_TYPEID::PROTOSS_HIGHTEMPLAR: return true;
-			case UNIT_TYPEID::PROTOSS_IMMORTAL: return true;
-			case UNIT_TYPEID::PROTOSS_PROBE: return true;
-			case UNIT_TYPEID::PROTOSS_SENTRY: return true;
-			case UNIT_TYPEID::PROTOSS_STALKER: return true;
-			case UNIT_TYPEID::PROTOSS_ZEALOT: return true;
+			case sc2::UNIT_TYPEID::TERRAN_BANSHEE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_BATTLECRUISER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_CYCLONE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_GHOST: return true;
+			case sc2::UNIT_TYPEID::TERRAN_HELLION: return true;
+			case sc2::UNIT_TYPEID::TERRAN_HELLIONTANK: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MARAUDER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MARINE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_MULE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_REAPER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SCV: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SIEGETANK: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SIEGETANKSIEGED: return true;
+			case sc2::UNIT_TYPEID::TERRAN_THOR: return true;
+			case sc2::UNIT_TYPEID::TERRAN_THORAP: return true;
+			case sc2::UNIT_TYPEID::TERRAN_VIKINGASSAULT: return true;
+			case sc2::UNIT_TYPEID::ZERG_BANELING: return true;
+			case sc2::UNIT_TYPEID::ZERG_BROODLING: return true;
+			case sc2::UNIT_TYPEID::ZERG_BROODLORDCOCOON: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELING: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINE: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZEALOT: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLING: return true;
+			case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS: return true;
+			case sc2::UNIT_TYPEID::ZERG_CORRUPTOR: return true;
+			case sc2::UNIT_TYPEID::ZERG_DRONE: return true;
+			case sc2::UNIT_TYPEID::ZERG_HYDRALISK: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTOR: return true;
+			case sc2::UNIT_TYPEID::ZERG_INFESTORTERRAN: return true;
+			case sc2::UNIT_TYPEID::ZERG_LURKERMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERLORD: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERLORDTRANSPORT: return true;
+			case sc2::UNIT_TYPEID::ZERG_OVERSEER: return true;
+			case sc2::UNIT_TYPEID::ZERG_QUEEN: return true;
+			case sc2::UNIT_TYPEID::ZERG_RAVAGER: return true;
+			case sc2::UNIT_TYPEID::ZERG_ROACH: return true;
+			case sc2::UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED: return true;
+			case sc2::UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED: return true;
+			case sc2::UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_SWARMHOSTMP: return true;
+			case sc2::UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON: return true;
+			case sc2::UNIT_TYPEID::ZERG_ULTRALISK: return true;
+			case sc2::UNIT_TYPEID::ZERG_ZERGLING: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ADEPT: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ARCHON: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_COLOSSUS: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_DARKTEMPLAR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_DISRUPTOR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_HIGHTEMPLAR: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_IMMORTAL: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_PROBE: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_SENTRY: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_STALKER: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_ZEALOT: return true;
 
 			default: return false;
 		}
@@ -250,22 +250,45 @@ struct IsGroundArmy
 };
 
 // --------------------------------------------------------
+//! Does not include supply depots, pylons, overlords, etc.
 struct IsTownHall 
 {
-	bool operator()(const Unit& unit) 
+	bool operator()(const sc2::Unit& unit) 
 	{
 		switch (unit.unit_type.ToType()) 
 		{
-			case UNIT_TYPEID::ZERG_HATCHERY: return true;
-			case UNIT_TYPEID::ZERG_LAIR: return true;
-			case UNIT_TYPEID::ZERG_HIVE: return true;
-			case UNIT_TYPEID::TERRAN_COMMANDCENTER: return true;
-			case UNIT_TYPEID::TERRAN_ORBITALCOMMAND: return true;
-			case UNIT_TYPEID::TERRAN_ORBITALCOMMANDFLYING: return true;
-			case UNIT_TYPEID::TERRAN_PLANETARYFORTRESS: return true;
-			case UNIT_TYPEID::PROTOSS_NEXUS: return true;
+			case sc2::UNIT_TYPEID::ZERG_HATCHERY: return true;
+			case sc2::UNIT_TYPEID::ZERG_LAIR: return true;
+			case sc2::UNIT_TYPEID::ZERG_HIVE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_COMMANDCENTER: return true;
+			case sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMAND: return true;
+			case sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMANDFLYING: return true;
+			case sc2::UNIT_TYPEID::TERRAN_PLANETARYFORTRESS: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_NEXUS: return true;
 
 			default: return false;
+		}
+	}
+};
+
+// --------------------------------------------------------
+//! Does not include town halls
+struct IsSupply
+{
+	// I'm not sure at this time overlord cocoons are when an overlord
+	//  is transforming into an overseer? Is it still an overlord at that time?
+	
+	bool operator()(const sc2::Unit& unit)
+	{
+		switch (unit.unit_type.ToType())
+		{
+		case sc2::UNIT_TYPEID::ZERG_OVERLORD: return true;
+		case sc2::UNIT_TYPEID::ZERG_OVERSEER: return true;
+		case sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOT: return true;
+		case sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOTLOWERED: return true;
+		case sc2::UNIT_TYPEID::PROTOSS_PYLON: return true;
+
+		default: return false;
 		}
 	}
 };
@@ -273,13 +296,13 @@ struct IsTownHall
 // --------------------------------------------------------
 struct IsVespeneGeyser
 {
-	bool operator()(const Unit& unit)
+	bool operator()(const sc2::Unit& unit)
 	{
 		switch (unit.unit_type.ToType())
 		{
-			case UNIT_TYPEID::NEUTRAL_VESPENEGEYSER: return true;
-			case UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER: return true;
-			case UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER: return true;
+			case sc2::UNIT_TYPEID::NEUTRAL_VESPENEGEYSER: return true;
+			case sc2::UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER: return true;
+			case sc2::UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER: return true;
 
 			default: return false;
 		}
@@ -289,15 +312,29 @@ struct IsVespeneGeyser
 // --------------------------------------------------------
 struct IsWorker 
 {
-	bool operator()(const Unit& unit) 
+	bool operator()(const sc2::Unit& unit) 
 	{
 		switch (unit.unit_type.ToType()) 
 		{
-			case UNIT_TYPEID::PROTOSS_PROBE: return true;
-			case UNIT_TYPEID::ZERG_DRONE: return true;
-			case UNIT_TYPEID::TERRAN_SCV: return true;
+			case sc2::UNIT_TYPEID::PROTOSS_PROBE: return true;
+			case sc2::UNIT_TYPEID::ZERG_DRONE: return true;
+			case sc2::UNIT_TYPEID::TERRAN_SCV: return true;
 
 			default: return false;
+		}
+	}
+};
+
+// --------------------------------------------------------
+struct IsLarva
+{
+	bool operator()(const sc2::Unit& unit)
+	{
+		switch (unit.unit_type.ToType())
+		{
+		case sc2::UNIT_TYPEID::ZERG_LARVA: return true;
+
+		default: return false;
 		}
 	}
 };

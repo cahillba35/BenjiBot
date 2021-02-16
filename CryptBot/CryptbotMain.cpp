@@ -4,13 +4,15 @@
 #include "sc2utils/sc2_manage_process.h"
 #include "sc2utils/sc2_arg_parser.h"
 
-#include "Cryptbot.h"
+//#include "Cryptbot.h"
+#include "BenjiBot.hpp"
 #include "LadderInterface.h"
 
 #ifdef DEBUG
 int main(int argc, char* argv[])
 {
-	CryptBot bot;
+	BenjiBot benjibot;
+	//CryptBot bot;
 	sc2::Coordinator coordinator;
 	if (!coordinator.LoadSettings(argc, argv))
 	{
@@ -19,9 +21,11 @@ int main(int argc, char* argv[])
 	}
 	coordinator.SetStepSize(1);
 	coordinator.SetRealtime(false);
+	// coordinator.SetRealtime(true); The new start countdown is messing with OnGameStart();
 	coordinator.SetMultithreaded(true);
 	coordinator.SetParticipants({
-		CreateParticipant(sc2::Race::Zerg, &bot),
+		//CreateParticipant(sc2::Race::Protoss, &bot),
+		CreateParticipant(sc2::Race::Protoss, &benjibot),
 		//sc2::PlayerSetup(sc2::PlayerType::Observer,Util::GetRaceFromString(enemyRaceString)),
 		CreateComputer(sc2::Race::Terran, sc2::Difficulty::Easy)
 	});
@@ -42,7 +46,7 @@ int main(int argc, char* argv[])
 int main(int argc, char* argv[]) 
 {
 
-	RunBot(argc, argv, new CryptBot(), sc2::Race::Zerg);
+	RunBot(argc, argv, new BenjiBot(), sc2::Race::Zerg);
 
 	return 0;
 }
