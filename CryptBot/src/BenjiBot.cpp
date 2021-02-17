@@ -158,6 +158,101 @@ sc2::Point2D BenjiBot::GetNearestBuildableLocationFor(sc2::ABILITY_ID structure,
 }
 
 // --------------------------------------------------------
+// Helpers
+// --------------------------------------------------------
+//! Returns bool whether or not a unit was found within the distance threshold. The nearestUnitId will be populated with the nearest unit's tag.
+//! The distance threshold is compared against distance squared of unit and point.
+bool BenjiBot::FindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Units& units, uint64_t& nearestUnitId, float distance /* = std::numeric_limits<float>::max() */)
+{
+    nearestUnitId = 0;
+
+    for (const auto& unit : units)
+    {
+        float d = DistanceSquared2D(unit->pos, point);
+        if (d < distance)
+        {
+            distance = d;
+            nearestUnitId = unit->tag;
+        }
+    }
+
+    return nearestUnitId != 0;
+}
+
+// --------------------------------------------------------
+//! Returns bool whether or not a geyser was found within the distance threshold. The nearestGeyserId will be populated with the nearest geyser's tag.
+//! The distance threshold is compared against distance squared of geyser and point.
+bool BenjiBot::FindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& point, uint64_t& nearestGeyserId, float distance)
+{
+    nearestGeyserId = 0;
+
+    const sc2::Units geysers = Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_EXTRACTOR));
+    for (const auto& geyser : geysers)
+    {
+        if (geyser->assigned_harvesters < geyser->ideal_harvesters)
+        {
+            float d = DistanceSquared2D(geyser->pos, point);
+            if (d < distance)
+            {
+                distance = d;
+                nearestGeyserId = geyser->tag;
+            }
+        }
+    }
+
+    return nearestGeyserId != 0;
+}
+
+// --------------------------------------------------------
+//! Special build function for vespene geysers, this is due to pathing issues to get to a geyser.
+bool BenjiBot::TryBuildGeyserStructureAtGeyser(uint64_t geyserId)
+{
+    // Get available workers;
+    const sc2::Units workers = Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_DRONE));
+    if (workers.empty())
+    {
+        return false;
+    }
+
+    // Check to see if any of these workers are already on their way to build on a geyser;
+    for (const auto& worker : workers)
+    {
+        for (const auto& order : worker->orders)
+        {
+            if (order.ability_id == structureAbilityId)
+            {
+                return false;
+            }
+        }
+    }
+
+    const sc2::Unit* geyserToBuildOn = Observation()->GetUnit(geyserId);
+
+    const sc2::Unit* buildingWorker = nullptr;
+    uint64_t closeWorkerId = 0;
+    if (FindNearestUnitToPoint(geyserToBuildOn->pos, workers, closeWorkerId))
+    {
+        buildingWorker = Observation()->GetUnit(closeWorkerId);
+    }
+    else
+    {
+        srand((unsigned int)time(0));
+        buildingWorker = GetRandomEntry(workers);
+    }
+
+    if (buildingWorker)
+    {
+        if (Query()->Placement(sc2::ABILITY_ID::BUILD_EXTRACTOR, geyserToBuildOn->pos))
+        {
+            Actions()->UnitCommand(buildingWorker, sc2::ABILITY_ID::BUILD_EXTRACTOR, geyserToBuildOn);
+            return true;
+        }
+    }
+ 
+    return false;
+}
+
+// --------------------------------------------------------
 // Constructor
 // --------------------------------------------------------
 BenjiBot::BenjiBot()
@@ -165,6 +260,8 @@ BenjiBot::BenjiBot()
 
 }
 
+// --------------------------------------------------------
+// Overrides
 // --------------------------------------------------------
 void BenjiBot::OnGameStart()
 {
@@ -200,8 +297,49 @@ void BenjiBot::OnGameStart()
 	const sc2::Units larvas = Observation()->GetUnits(sc2::Unit::Alliance::Ally, IsLarva());
 	Actions()->UnitCommand(larvas, sc2::ABILITY_ID::TRAIN_DRONE);
 
-	m_expansionLocations = sc2::search::CalculateExpansionLocations(Observation(), Query());
-	
+	m_expansionPositions = sc2::search::CalculateExpansionLocations(Observation(), Query());
+}
+
+// --------------------------------------------------------
+void BenjiBot::OnStep()
+{
+
+}
+
+// --------------------------------------------------------
+void BenjiBot::OnUnitIdle(const sc2::Unit* unit)
+{
+
+}
+
+// --------------------------------------------------------
+void BenjiBot::OnUnitCreated(const sc2::Unit* unit)
+{
+
+}
+
+// --------------------------------------------------------
+void BenjiBot::OnUnitDestroyed(const sc2::Unit* unit)
+{
+    switch (unit->unit_type.ToType())
+    {
+        case sc2::UNIT_TYPEID::ZERG_DRONE:
+        {
+            // A drone has died.
+            break;
+        }
+        case sc2::UNIT_TYPEID::ZERG_OVERLORD:
+        {
+            // An overlord has died.
+            break;
+        }
+    }
+}
+
+// --------------------------------------------------------
+void BenjiBot::OnUnitEnterVision(const sc2::Unit* unit)
+{
+
 }
 
 // --------------------------------------------------------
