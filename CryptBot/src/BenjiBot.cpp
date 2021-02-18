@@ -145,7 +145,7 @@ sc2::Point2D BenjiBot::GetNearestBuildableLocationFor(sc2::ABILITY_ID structure,
 		if (placementResults[i])
 		{
 			sc2::Point2D& p = desiredPlacementQueries[i].target_pos;			
-			float d = Distance2D(p, location);
+			float d = sc2::Distance2D(p, location);
 			if (d < distance)
 			{
 				distance = d;
@@ -162,13 +162,13 @@ sc2::Point2D BenjiBot::GetNearestBuildableLocationFor(sc2::ABILITY_ID structure,
 // --------------------------------------------------------
 //! Returns bool whether or not a unit was found within the distance threshold. The nearestUnitId will be populated with the nearest unit's tag.
 //! The distance threshold is compared against distance squared of unit and point.
-bool BenjiBot::FindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Units& units, uint64_t& nearestUnitId, float distance /* = std::numeric_limits<float>::max() */)
+bool BenjiBot::TryFindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Units& units, uint64_t& nearestUnitId, float distance /* = std::numeric_limits<float>::max() */)
 {
     nearestUnitId = 0;
 
     for (const auto& unit : units)
     {
-        float d = DistanceSquared2D(unit->pos, point);
+        float d = sc2::DistanceSquared2D(unit->pos, point);
         if (d < distance)
         {
             distance = d;
@@ -182,16 +182,16 @@ bool BenjiBot::FindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Unit
 // --------------------------------------------------------
 //! Returns bool whether or not a geyser was found within the distance threshold. The nearestGeyserId will be populated with the nearest geyser's tag.
 //! The distance threshold is compared against distance squared of geyser and point.
-bool BenjiBot::FindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& point, uint64_t& nearestGeyserId, float distance)
+bool BenjiBot::TryFindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& point, uint64_t& nearestGeyserId, float distance)
 {
     nearestGeyserId = 0;
 
-    const sc2::Units geysers = Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_EXTRACTOR));
+    const sc2::Units geysers = m_observationInterface->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_EXTRACTOR));
     for (const auto& geyser : geysers)
     {
         if (geyser->assigned_harvesters < geyser->ideal_harvesters)
         {
-            float d = DistanceSquared2D(geyser->pos, point);
+            float d = sc2::DistanceSquared2D(geyser->pos, point);
             if (d < distance)
             {
                 distance = d;
@@ -208,7 +208,7 @@ bool BenjiBot::FindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& 
 bool BenjiBot::TryBuildGeyserStructureAtGeyser(uint64_t geyserId)
 {
     // Get available workers;
-    const sc2::Units workers = Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_DRONE));
+    const sc2::Units workers = m_observationInterface->GetUnits(sc2::Unit::Alliance::Self, sc2::IsUnit(sc2::UNIT_TYPEID::ZERG_DRONE));
     if (workers.empty())
     {
         return false;
@@ -219,20 +219,20 @@ bool BenjiBot::TryBuildGeyserStructureAtGeyser(uint64_t geyserId)
     {
         for (const auto& order : worker->orders)
         {
-            if (order.ability_id == structureAbilityId)
+            if (order.ability_id == sc2::ABILITY_ID::BUILD_EXTRACTOR)
             {
                 return false;
             }
         }
     }
 
-    const sc2::Unit* geyserToBuildOn = Observation()->GetUnit(geyserId);
+    const sc2::Unit* geyserToBuildOn = m_observationInterface->GetUnit(geyserId);
 
     const sc2::Unit* buildingWorker = nullptr;
     uint64_t closeWorkerId = 0;
-    if (FindNearestUnitToPoint(geyserToBuildOn->pos, workers, closeWorkerId))
+    if (TryFindNearestUnitToPoint(geyserToBuildOn->pos, workers, closeWorkerId))
     {
-        buildingWorker = Observation()->GetUnit(closeWorkerId);
+        buildingWorker = m_observationInterface->GetUnit(closeWorkerId);
     }
     else
     {
@@ -265,8 +265,11 @@ BenjiBot::BenjiBot()
 // --------------------------------------------------------
 void BenjiBot::OnGameStart()
 {
+    // Retrive Interfaces;
+    m_observationInterface = Observation();
+
 	// Determine Opponentt's race, only support 1 opponent race;
-	m_gameInfo = new sc2::GameInfo(Observation()->GetGameInfo());
+	m_gameInfo = new sc2::GameInfo(m_observationInterface->GetGameInfo());
 
 	// If we find any race to be ours, then the other race must be opponent;
 	bool ownRaceFound = false;
@@ -289,21 +292,21 @@ void BenjiBot::OnGameStart()
 	// When you come back, look into moving this below code into OnStep()
 
 	// On start of the game, there is only 1 hatchery;
-	const sc2::Units hatcheries = Observation()->GetUnits();
-	const sc2::Units NewUnits = Observation()->GetUnits();
+	const sc2::Units hatcheries = m_observationInterface->GetUnits();
+	const sc2::Units NewUnits = m_observationInterface->GetUnits();
 	m_startingPosition = sc2::Point3D(hatcheries[0]->pos);
 
 	// Just tell all of the starting larva to build a drone, only 1 will work;
-	const sc2::Units larvas = Observation()->GetUnits(sc2::Unit::Alliance::Ally, IsLarva());
+	const sc2::Units larvas = m_observationInterface->GetUnits(sc2::Unit::Alliance::Ally, IsLarva());
 	Actions()->UnitCommand(larvas, sc2::ABILITY_ID::TRAIN_DRONE);
 
-	m_expansionPositions = sc2::search::CalculateExpansionLocations(Observation(), Query());
+	m_expansionPositions = sc2::search::CalculateExpansionLocations(m_observationInterface, Query());
 }
 
 // --------------------------------------------------------
 void BenjiBot::OnStep()
 {
-
+    
 }
 
 // --------------------------------------------------------
@@ -346,8 +349,8 @@ void BenjiBot::OnUnitEnterVision(const sc2::Unit* unit)
 int32_t BenjiBot::GetCurrentMaxSupply()
 {
 	int32_t maxSupply = 0;
-	const sc2::Units townHalls = Observation()->GetUnits(sc2::Unit::Alliance::Ally, IsTownHall());
-	const sc2::Units supplys = Observation()->GetUnits(sc2::Unit::Alliance::Ally, IsSupply());
+	const sc2::Units townHalls = m_observationInterface->GetUnits(sc2::Unit::Alliance::Ally, IsTownHall());
+	const sc2::Units supplys = m_observationInterface->GetUnits(sc2::Unit::Alliance::Ally, IsSupply());
 
 	for (const auto& townHall : townHalls)
 	{
@@ -359,4 +362,63 @@ int32_t BenjiBot::GetCurrentMaxSupply()
 	}
 
 	return maxSupply;
+}
+
+// --------------------------------------------------------
+bool BenjiBot::TryFindEnemyPosition(sc2::Point2D& targetPosition)
+{
+    if (m_gameInfo->enemy_start_locations.empty())
+    {
+        return false;
+    }
+
+    int32_t i = rand() % m_gameInfo->enemy_start_locations.size();
+    targetPosition = m_gameInfo->enemy_start_locations[i];
+    return true;
+}
+
+// --------------------------------------------------------
+bool BenjiBot::TryFindRandomPathableLocation(const sc2::Tag tag, sc2::Point2D& targetPosition)
+{
+    // Start by finding a random point inside the playable area;
+    float playableWidth = m_gameInfo->playable_max.x - m_gameInfo->playable_min.x;
+    float playableHeight = m_gameInfo->playable_max.y - m_gameInfo->playable_min.y;
+
+    // In case the gameInfo does not provide a valid answer;
+    if (playableWidth == 0.0f || playableHeight == 0.0f)
+    {
+        playableWidth = 236;
+        playableHeight = 228;
+    }
+
+    targetPosition.x = playableWidth  * sc2::GetRandomFraction() + m_gameInfo->playable_min.x;
+    targetPosition.y = playableHeight * sc2::GetRandomFraction() + m_gameInfo->playable_min.y;
+
+    // Now send a pathing query from the unit to that point. Can also query from point to point,
+    // but using a unit tag wherever possible will be more accurate.
+    // Note: This query must communicate with the game to get a result which affects performance.
+    // Ideally batch up the queries (using PathingDistanceBatched) and do many at once.
+    float d = Query()->PathingDistance(m_observationInterface->GetUnit(tag), targetPosition);
+
+    // If we have any distance, then we have found a path;
+    return d > 0.1f;
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+void *CreateNewAgent()
+{
+    return (void *)new BenjiBot();
+}
+
+// --------------------------------------------------------
+const char *GetAgentName()
+{
+    return "BenjiBot";
+}
+
+// --------------------------------------------------------
+int GetAgentRace()
+{
+    return (int)sc2::Race::Zerg;
 }

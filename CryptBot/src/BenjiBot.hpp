@@ -22,6 +22,9 @@ enum QueryType
 	MaxXMaxY
 };
 
+// Forward Declarations -----------------------------------
+class sc2::ObservationInterface;
+
 // BenjiBot -----------------------------------------------
 class BenjiBot : public sc2::Agent
 {
@@ -33,8 +36,8 @@ public:
 	sc2::Point2D GetNearestBuildableLocationFor(sc2::ABILITY_ID structure, sc2::Point2D location, QueryType queryType, sc2::search::ExpansionParameters parameters = sc2::search::ExpansionParameters());
 	
     // Helpers, may move these later;
-    bool FindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Units& units, uint64_t& nearestUnitId, float distance = std::numeric_limits<float>::max());
-    bool FindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& point, uint64_t& nearestGeyserId, float distance);
+    bool TryFindNearestUnitToPoint(const sc2::Point2D& point, const sc2::Units& units, uint64_t& nearestUnitId, float distance = std::numeric_limits<float>::max());
+    bool TryFindNearestGeyserWithLessThanIdealHarvesters(const sc2::Point2D& point, uint64_t& nearestGeyserId, float distance);
 
     bool TryBuildGeyserStructureAtGeyser(uint64_t geyserId);
 
@@ -52,8 +55,13 @@ public:
 private:
 
 	int32_t GetCurrentMaxSupply();
+    bool TryFindEnemyPosition(sc2::Point2D& targetPosition);
+    bool TryFindRandomPathableLocation(const sc2::Tag tag, sc2::Point2D& targetPosition);
 
 private:
+
+    // Pointers to helpful interfaces so we don't have to retrieve them often;
+    const sc2::ObservationInterface* m_observationInterface = nullptr;
 
     // Important Positions;
 	sc2::Point3D m_startingPosition;
@@ -63,3 +71,7 @@ private:
 	sc2::GameInfo* m_gameInfo;
 	sc2::Race m_opponentRace;
 };
+
+void DllExport *CreateNewAgent();
+int DllExport GetAgentRace();
+const char DllExport *GetAgentName();
